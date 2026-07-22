@@ -89,7 +89,7 @@ document.addEventListener('DOMContentLoaded', () => {
       },
       body: JSON.stringify({
         status: 'ACCEPTED! ❤️',
-        message: 'Laiba Naz clicked YES on your love letter!',
+        message: 'Laiba Naz clicked YES on your love letter🌹!',
         time: new Date().toLocaleString()
       })
     }).catch(err => console.log(err));
