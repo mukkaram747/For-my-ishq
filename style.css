@@ -8,7 +8,7 @@
 }
 
 body {
-  font-family: 'Poppins', sans-serif;
+  font-family: 'Poppins', Apple Color Emoji, Segoe UI Emoji, Noto Color Emoji, sans-serif;
   background: linear-gradient(135deg, #1a1c29, #10121a);
   min-height: 100vh;
   display: flex;
@@ -48,7 +48,7 @@ body {
   align-items: center;
 }
 
-/* Smooth Light Circulation Border Effect */
+/* Light Circulation Border Effect */
 .card::before {
   content: '';
   position: absolute;
@@ -76,7 +76,7 @@ body {
   z-index: 1;
 }
 
-/* Bring all card content above the light border */
+/* Bring all content above the glowing border */
 .card > * {
   position: relative;
   z-index: 2;
@@ -199,7 +199,6 @@ h1, h2 {
   z-index: 2;
 }
 
-/* Envelope hover / click animation */
 .envelope-wrapper:hover .flap {
   transform: rotateX(180deg);
   z-index: 1;
@@ -236,7 +235,6 @@ h1, h2 {
   font-size: 1rem;
 }
 
-/* Custom Scrollbar for letter */
 .letter-content::-webkit-scrollbar {
   width: 5px;
 }
@@ -273,6 +271,7 @@ h1, h2 {
   gap: 15px;
   width: 100%;
   margin-top: 10px;
+  position: relative;
 }
 
 .btn-yes {
@@ -287,6 +286,7 @@ h1, h2 {
 .btn-no {
   background: linear-gradient(45deg, #e53935, #e35d5b);
   box-shadow: 0 5px 15px rgba(229, 57, 53, 0.4);
+  transition: transform 0.2s ease;
 }
 
 .hint-text {
@@ -315,7 +315,7 @@ h1, h2 {
 }
 
 /* ==========================================
-   MOBILE RESPONSIVENESS (MOBILE VIEW FIX)
+   MOBILE RESPONSIVENESS
    ========================================== */
 @media screen and (max-width: 480px) {
   body {
