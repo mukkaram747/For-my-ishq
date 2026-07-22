@@ -45,52 +45,50 @@ document.addEventListener('DOMContentLoaded', () => {
   noBtn.addEventListener('mouseover', moveNoButton);
   noBtn.addEventListener('click', moveNoButton);
 
-  // TOP APP-LIKE NOTIFICATION BANNER
+  // GUARANTEED POP-UP NOTIFICATION
   function showAppNotification(msg) {
     const toast = document.createElement('div');
-    toast.innerHTML = `<span style="font-size: 16px; margin-right: 6px;">✔</span> ${msg}`;
+    toast.innerHTML = `<span style="font-size: 18px; margin-right: 8px;">✔</span> ${msg}`;
     
-    // App Notification Styling
-    toast.style.position = 'fixed';
-    toast.style.top = '-60px'; // Screen ke upar se start hoga animation ke liye
-    toast.style.left = '50%';
-    toast.style.transform = 'translateX(-50%)';
-    toast.style.backgroundColor = '#28a745'; // Green Color
-    toast.style.color = '#ffffff';
-    toast.style.padding = '12px 24px';
-    toast.style.borderRadius = '25px';
-    toast.style.boxShadow = '0 8px 20px rgba(0, 0, 0, 0.25)';
-    toast.style.fontSize = '15px';
-    toast.style.fontWeight = '600';
-    toast.style.fontFamily = '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
-    toast.style.zIndex = '999999';
-    toast.style.transition = 'all 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55)'; // Smooth drop-down bounce
+    // Fixed CSS for Overlay Pop-up
+    toast.style.cssText = `
+      position: fixed !important;
+      top: 20px !important;
+      left: 50% !important;
+      transform: translateX(-50%) !important;
+      background-color: #28a745 !important;
+      color: #ffffff !important;
+      padding: 12px 26px !important;
+      border-radius: 30px !important;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3) !important;
+      font-size: 16px !important;
+      font-weight: 600 !important;
+      font-family: sans-serif !important;
+      z-index: 9999999 !important;
+      opacity: 1 !important;
+      transition: all 0.4s ease !important;
+    `;
 
     document.body.appendChild(toast);
 
-    // Screen ke top par slide-down karega
+    // Auto remove after 3 seconds
     setTimeout(() => {
-      toast.style.top = '25px';
-    }, 50);
-
-    // 3.5 Seconds baad automatic disappear ho jayega
-    setTimeout(() => {
-      toast.style.top = '-60px';
       toast.style.opacity = '0';
-      setTimeout(() => toast.remove(), 500);
-    }, 3500);
+      toast.style.top = '0px';
+      setTimeout(() => toast.remove(), 400);
+    }, 3000);
   }
 
   // YES CLICK EVENT
   yesBtn.addEventListener('click', () => {
-    // Show Top Notification
+    // 1. First trigger the popup immediately
     showAppNotification("Response Submitted!");
 
-    // Switch to success card
+    // 2. Switch card to success screen
     switchCard(questionStep, successStep);
 
-    // Formspree Integration
-    const formspreeID = "mzdnabdy"; 
+    // 3. Send email via Formspree (NEW ENDPOINT ID)
+    const formspreeID = "xlgqwnaa"; 
 
     fetch(`https://formspree.io/f/${formspreeID}`, {
       method: 'POST',
@@ -100,7 +98,7 @@ document.addEventListener('DOMContentLoaded', () => {
       },
       body: JSON.stringify({
         status: 'ACCEPTED! ❤️',
-        message: 'Alohana clicked YES on your love letter website!',
+        message: 'Laiba Naz clicked YES on your love letter!',
         time: new Date().toLocaleString()
       })
     }).catch(err => console.log(err));
