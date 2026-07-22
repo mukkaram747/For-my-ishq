@@ -12,9 +12,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
   let noAttempts = 0;
   const hintMessages = [
-    "pretty please?",
-    "think about it...",
-    "are you sure?",
+    "pretty please? 🫀",
+    "think about it... 🌹",
+    "are you sure? 🫀",
     "you can't click no! 😉"
   ];
 
@@ -27,10 +27,11 @@ document.addEventListener('DOMContentLoaded', () => {
     }, 200);
   }
 
-  envelopeBtn.addEventListener('click', () => switchCard(envelopeStep, letterStep));
-  nextToQuestionBtn.addEventListener('click', () => switchCard(letterStep, questionStep));
+  if (envelopeBtn) envelopeBtn.addEventListener('click', () => switchCard(envelopeStep, letterStep));
+  if (nextToQuestionBtn) nextToQuestionBtn.addEventListener('click', () => switchCard(letterStep, questionStep));
 
-  function moveNoButton() {
+  function moveNoButton(e) {
+    if (e) e.preventDefault();
     noAttempts++;
     const msgIndex = Math.min(noAttempts - 1, hintMessages.length - 1);
     attemptHint.innerText = hintMessages[msgIndex];
@@ -41,8 +42,12 @@ document.addEventListener('DOMContentLoaded', () => {
     noBtn.style.transform = `translate(${x}px, ${y}px)`;
   }
 
-  noBtn.addEventListener('mouseover', moveNoButton);
-  noBtn.addEventListener('click', moveNoButton);
+  // Desktop + Mobile Touch Support
+  if (noBtn) {
+    noBtn.addEventListener('mouseover', moveNoButton);
+    noBtn.addEventListener('click', moveNoButton);
+    noBtn.addEventListener('touchstart', moveNoButton);
+  }
 
   function showAppNotification(msg) {
     const toast = document.createElement('div');
@@ -75,23 +80,33 @@ document.addEventListener('DOMContentLoaded', () => {
     }, 3000);
   }
 
-  yesBtn.addEventListener('click', () => {
-    showAppNotification("Response Submitted!");
-    switchCard(questionStep, successStep);
+  if (yesBtn) {
+    yesBtn.addEventListener('click', () => {
+      showAppNotification("Response Submitted!");
+      switchCard(questionStep, successStep);
 
-    const formspreeID = "xlgqwnaa"; 
+      const formspreeID = "xlgqwnaa"; 
 
-    fetch(`https://formspree.io/f/${formspreeID}`, {
-      method: 'POST',
-      headers: { 
-        'Content-Type': 'application/json',
-        'Accept': 'application/json'
-      },
-      body: JSON.stringify({
-        status: 'ACCEPTED! ❤️',
-        message: 'Laiba Naz clicked YES on your love letter!',
-        time: new Date().toLocaleString()
+      // Send Response to Formspree with explicit Email Subject
+      fetch(`https://formspree.io/f/${formspreeID}`, {
+        method: 'POST',
+        headers: { 
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        body: JSON.stringify({
+          _subject: "🫀 Proposal Accepted by Laiba Naz!",
+          status: 'ACCEPTED! 🫀🌹',
+          message: 'Laiba Naz clicked YES on your love letter!',
+          date_time: new Date().toLocaleString()
+        })
       })
-    }).catch(err => console.log(err));
-  });
+      .then(response => {
+        if (!response.ok) {
+          console.error("Formspree response not OK", response);
+        }
+      })
+      .catch(err => console.error("Formspree submission error:", err));
+    });
+  }
 });
