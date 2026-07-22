@@ -8,7 +8,6 @@ document.addEventListener('DOMContentLoaded', () => {
   const nextToQuestionBtn = document.getElementById('next-to-question');
   const yesBtn = document.getElementById('yes-btn');
   const noBtn = document.getElementById('no-btn');
-  const backToStartBtn = document.getElementById('back-to-start');
   const attemptHint = document.getElementById('attempt-hint');
 
   let noAttempts = 0;
@@ -45,12 +44,10 @@ document.addEventListener('DOMContentLoaded', () => {
   noBtn.addEventListener('mouseover', moveNoButton);
   noBtn.addEventListener('click', moveNoButton);
 
-  // GUARANTEED POP-UP NOTIFICATION
   function showAppNotification(msg) {
     const toast = document.createElement('div');
     toast.innerHTML = `<span style="font-size: 18px; margin-right: 8px;">✔</span> ${msg}`;
     
-    // Fixed CSS for Overlay Pop-up
     toast.style.cssText = `
       position: fixed !important;
       top: 20px !important;
@@ -71,7 +68,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     document.body.appendChild(toast);
 
-    // Auto remove after 3 seconds
     setTimeout(() => {
       toast.style.opacity = '0';
       toast.style.top = '0px';
@@ -79,15 +75,10 @@ document.addEventListener('DOMContentLoaded', () => {
     }, 3000);
   }
 
-  // YES CLICK EVENT
   yesBtn.addEventListener('click', () => {
-    // 1. First trigger the popup immediately
     showAppNotification("Response Submitted!");
-
-    // 2. Switch card to success screen
     switchCard(questionStep, successStep);
 
-    // 3. Send email via Formspree (NEW ENDPOINT ID)
     const formspreeID = "xlgqwnaa"; 
 
     fetch(`https://formspree.io/f/${formspreeID}`, {
@@ -102,13 +93,5 @@ document.addEventListener('DOMContentLoaded', () => {
         time: new Date().toLocaleString()
       })
     }).catch(err => console.log(err));
-  });
-
-  backToStartBtn.addEventListener('click', () => {
-    noAttempts = 0;
-    attemptHint.innerText = "";
-    noBtn.style.transform = "translate(0px, 0px)";
-    
-    switchCard(successStep, envelopeStep);
   });
 });
